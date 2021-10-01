@@ -1,0 +1,32 @@
+Скачайте проект Distance
+
+Напишите метод вычисления расстояния от отрезка до точки.
+Для проверки своего решения запустите скачанный проект.
+Расстоянием от отрезка до точки называется расстояние от ближайшей точки отрезка до точки. Это либо расстояние до точки от прямой, содержащей отрезок, либо расстояние до точки от одного из концов отрезка.
+
+
+using System;
+
+namespace DistanceTask
+{
+	public static class DistanceTask
+	{
+		// Расстояние от точки O (x, y) до отрезка AB с координатами A(ax, ay), B(bx, by)
+		public static double GetDistanceToSegment(double ax, double ay, double bx, double by, double x, double y)
+		{
+			var segmentAO = Math.Sqrt(((x - ax) * (x - ax)) + ((y - ay) * (y - ay)));
+			var segmentOB = Math.Sqrt(((x - bx) * (x - bx)) + ((y - by) * (y - by)));
+			var segmentAB = Math.Sqrt(((ax - bx) * (ax - bx)) + ((ay - by) * (ay - by)));
+
+			if (segmentAB*segmentAB + segmentAO*segmentAO - segmentOB*segmentOB > 0 && segmentAB * segmentAB + segmentOB * segmentOB - segmentAO * segmentAO > 0)
+            {
+				var p = (segmentAB + segmentAO + segmentOB) / 2;
+				return (2 * Math.Sqrt((p * (p - segmentAO) * (p - segmentOB) * (p - segmentAB)))) / ab;
+			}
+			else
+            {
+				return Math.Min(segmentAO,segmentOB)
+            }
+		}
+	}
+}
