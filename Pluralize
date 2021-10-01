@@ -1,0 +1,38 @@
+Скачайте проект Pluralize
+
+Напишите метод, склоняющий существительное «рублей» следующее за указанным числительным.
+
+Например, для аргумента 10, метод должен вернуть «рублей», для 1 — вернуть «рубль», для 2 — «рубля».
+
+Для проверки своего решения запустите скачанный проект.
+
+
+namespace Pluralize
+{
+	public static class PluralizeTask
+	{
+		public static string PluralizeRubles(int count)
+		{
+			return ReadCount(count);
+		}
+
+		public static string ReadCount(int count)
+		{
+			var division10 = count % 10;
+        	var division100 = count % 100;
+        
+        	if (5 <= division10 && division10 <= 9 || 11 <= division100 && division100 <= 19 || division10 == 0)
+        	{
+            	return "рублей";
+        	}
+        	else if (2 <= division10 && division10 <= 4)
+        	{
+            	return "рубля";
+        	}
+        	else
+        	{
+            	return "рубль";
+        	}
+		}
+	}
+}
