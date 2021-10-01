@@ -1,0 +1,50 @@
+Вам даны два прямоугольника на плоскости, со сторонами параллельными осям координат с целочисленными координатами.
+Реализуйте в классе RectanglesTask.cs три метода для работы с прямоугольниками:
+определение, есть ли у двух прямоугольников хотя бы одна общая точка (и граница и внутренность считаются частью прямоугольника);
+вычисление площади пересечения;
+определение, вложен ли один в другой.
+Решите задание без использования библиотечных методов, кроме Min и Max.
+Обратите внимание, что ваше решение должно корректно работать с вырожденными прямоугольниками: у которых длина или ширина равны 0.
+Для проверки своего решения запустите скачанный проект.
+В мире компьютерной графики принято, что верхний левый угол экрана имеет координаты (0, 0), а ось Y направлена вниз, а не вверх, как принято в математике. Поэтому в этой задаче нижний край прямоугольника имеет большую координату, чем верхний. Учитывайте это при решении задачи!
+
+
+
+using System;
+
+namespace Rectangles
+{
+    public static class RectanglesTask
+    {
+        public static bool AreIntersected(Rectangle r1, Rectangle r2)
+        {
+            return CheckIntersection(r1.Left, r2.Left, r1.Width, r2.Width) && CheckIntersection(r1.Top, r2.Top, r1.Height, r2.Height);
+        }
+
+        public static int IntersectionSquare(Rectangle r1, Rectangle r2)
+        {
+            if (!AreIntersected(r1, r2)) return 0;
+            else if ((r1.Left <= r2.Left) && (r1.Top <= r2.Top))
+                return Math.Min((r1.Top + r1.Height - r2.Top), Math.Min(r1.Height, r2.Height)) * Math.Min((r1.Left - r2.Left + r1.Width), Math.Min(r1.Width, r2.Width));
+            else if ((r1.Left <= r2.Left) && (r1.Top >= r2.Top))
+                return Math.Min((r1.Left + r1.Width - r2.Left), Math.Min(r1.Width, r2.Width)) * Math.Min((r2.Top + r2.Height - r1.Top), Math.Min(r1.Height, r2.Height));
+            else if ((r1.Left >= r2.Left) && (r1.Top >= r2.Top))
+                return Math.Min((r2.Top + r2.Height - r1.Top), Math.Min(r1.Height, r2.Height)) * Math.Min((r2.Left + r2.Width - r1.Left), Math.Min(r1.Width, r2.Width));
+            else return Math.Min((r2.Left + r2.Width - r1.Left), Math.Min(r1.Width, r2.Width)) * Math.Min((r1.Top + r1.Height - r2.Top), Math.Min(r1.Height, r2.Height));
+        }
+
+        public static int IndexOfInnerRectangle(Rectangle r1, Rectangle r2)
+        {
+            int squareR1 = r1.Width * r1.Height;
+            int squareR2 = r2.Width * r2.Height;
+            if ((IntersectionSquare(r1, r2) == squareR1) && (squareR1 != 0) || (squareR1 == 0) && (r1.Left >= r2.Left) && (r1.Left + r1.Width <= r2.Left + r2.Width) && (r1.Top >= r2.Top) && (r1.Top + r1.Height <= r2.Top + r2.Height)) return 0;
+            else if ((IntersectionSquare(r1, r2) == squareR2) && (squareR2 != 0) || (squareR2 == 0) && (r2.Left >= r1.Left) && (r2.Left + r2.Width <= r1.Left + r1.Width) && (r2.Top >= r1.Top) && (r2.Top + r2.Height <= r1.Top + r1.Height)) return 1;
+            else return -1;
+        }
+
+        static bool CheckIntersection(int x1, int x2, int l1, int l2)
+        {
+            return (-l1 <= (x1 - x2)) && ((l2) >= (x1 - x2));
+        }
+    }
+}
